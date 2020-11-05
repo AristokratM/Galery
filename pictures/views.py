@@ -1,12 +1,16 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 import datetime
-from .forms import NameForm, ContactForm
+
+from django.urls import reverse
+
+from .forms import NameForm, ContactForm, PictureForm, HallForm
 from django.core.mail import send_mail
+from  .models import Picture
 # Create your views here.
 
 
-def current_datetime(request, pk):
+def current_datetime(request):
     now = datetime.datetime.now()
     html = "<html><body>It is now %s.</body></html>" % now
     return HttpResponse(html)
@@ -41,3 +45,19 @@ def contact_form(request):
     else:
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})
+
+
+def picture_form(request):
+    if request.method == 'POST':
+        form = PictureForm(request.POST)
+        if form.is_valid():
+            picture = form.save()
+            return HttpResponseRedirect(reverse('picture', args=(picture.id,)))
+    else:
+        form = PictureForm()
+    return render(request, 'pictures.html', {'form': form})
+
+
+def get_picture(request, pk):
+    picture = Picture.objects.get(pk=pk)
+    return render(request, 'picture.html', {'picture': picture})
