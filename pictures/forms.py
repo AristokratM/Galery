@@ -19,9 +19,6 @@ class PictureForm(ModelForm):
     class Meta:
         model = Picture
         fields = '__all__'
-        widgets = {
-            'name': Textarea(attrs={'cols': 20, 'rows': 1})
-        }
         labels = {
             'name': _('Picture Name'),
         }

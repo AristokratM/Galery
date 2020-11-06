@@ -5,23 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-            <table>
-                <thead>
-                    {% for form in formset.forms %}
-                        {% if forloop.first %}
-                            {% for field in form.visible_fields %}
-                                <th>{{ field.label_tag }}</th>
-                            {% endfor %}
-                        {% endif %}
-                </thead>
-                <tbody>
-                        <tr>
-                            {% for field in form.visible_fields %}
-                                <td>{{ field }}</td>
-                            {% endfor %}
-                        </tr>
+        <form action="{% url 'pictures' %}" method="post">
+            {{ formset.management_form }}
+            {% for form in formset %}
+                {% csrf_token %}
+                    {% for field in form.visible_fields %}
+                        <div class="fieldWrapper">
+                        {{ field.error_message }}
+                        {{ field.label_tag }} {{ field }}
+                        </div>
                     {% endfor %}
-                </tbody>
-            </table>
+                <br>
+                
+            {% endfor %}
+             <input type="submit" value="submit">
+        </form>
 </body>
 </html>

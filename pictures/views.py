@@ -50,7 +50,14 @@ def contact_form(request):
 
 def pictures(request):
     PictureFormSet = modelformset_factory(Picture, form=PictureForm, extra=2, max_num=20)
-    formset = PictureFormSet(queryset=Picture.objects.all())
+    if request.method == 'POST':
+        formset = PictureFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            for form in formset:
+                if form.is_valid():
+                    print(form.save())
+    else:
+        formset = PictureFormSet()
     return render(request, 'pictures.html', {'formset': formset})
 
 
