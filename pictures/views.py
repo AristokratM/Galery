@@ -53,9 +53,7 @@ def pictures(request):
     if request.method == 'POST':
         formset = PictureFormSet(request.POST, request.FILES)
         if formset.is_valid():
-            for form in formset:
-                if form.is_valid():
-                    print(form.save())
+            formset.save();
     else:
         formset = PictureFormSet()
     return render(request, 'pictures.html', {'formset': formset})
